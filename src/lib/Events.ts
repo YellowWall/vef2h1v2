@@ -56,10 +56,10 @@ export async function createEventHandler(
   res: Response,
   next: NextFunction,
 ) {
-  if(!req.cookies?.signin){
+  if(!req.body.token){
     return res.status(401).json("ekki skráður inn")
   }
-  const userInfo=jwt.decode(req.cookies.signin)
+  const userInfo=jwt.decode(req.body.token)
   if(!userInfo||!userInfo['username']){
       return res.status(401).json('ekki skráður inn');
   }
@@ -119,10 +119,10 @@ export async function updateEventHandler(
   res: Response,
   next: NextFunction,
 ) {
-  if(!req.cookies?.signin){
+  if(!req.body.token){
     return res.status(401).json("ekki skráður inn")
   }
-  const userInfo=jwt.decode(req.cookies.signin)
+  const userInfo=jwt.decode(req.body.token)
   if(!userInfo||!userInfo['username']){
       return res.status(401).json('ekki skráður inn');
   }
