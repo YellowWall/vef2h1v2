@@ -142,6 +142,7 @@ export async function postRegistrationHandler(
     req:Request,
     res:Response,
     next:NextFunction){
+    console.log("startpostreg");
     if(!req.body.token){
         return res.status(401).json('ekkert token');
     }
@@ -153,7 +154,7 @@ export async function postRegistrationHandler(
     if(!username){
         username = userInfo['username'];
     }
-    if(!(userInfo['username']==username||userInfo['admin'])){
+    if(!userInfo['username']==username&&!userInfo['admin']){
         return res.status(401).json('hefur ekki heimild til að breyta skráningu þessa notenda')
     }
     const {slug} = req.params;

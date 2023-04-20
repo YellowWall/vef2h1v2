@@ -40,6 +40,7 @@ function generateToken(user: User){
     id: user.id,
     username: user.username,
     admin: user.admin,
+    name:user.name,
   };
 
   const secret = process.env.SESSION_SECRET || "your-secret-key";

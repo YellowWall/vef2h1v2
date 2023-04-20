@@ -63,6 +63,16 @@ export async function getUsernames(req:Request,res:Response,next:NextFunction){
     return res.status(500).json("server side villa");
   }
 }
+export async function getStandardNameOfUser(req:Request,res:Response,next:NextFunction){
+  const {user} = req.body;
+  const q = 'select name as nafn from users where username =$1;';
+  const result = await query(q,[user]);
+  if(!result){
+    return res.status(404).json("no such user");
+  }
+  const nafn = result.rows[0].nafn;
+  return res.status(200).json({nafn});
+}
 
 export async function createUser(req: Request, res: Response, next: NextFunction) {
   // Geymum hashað password!
