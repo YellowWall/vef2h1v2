@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 import { NextFunction, Request, Response } from 'express';
 import { User, userMapper } from '../routes/types.js';
 import { query } from './db.js';
+import jwt from 'jsonwebtoken';
 
 export async function comparePasswords(password:string, hash:string):Promise<boolean>  {
   try {
@@ -38,6 +39,29 @@ export async function findById(id:number):Promise<User|null> {
   }
 
   return null;
+}
+export async function getUsernames(req:Request,res:Response,next:NextFunction){
+  const {token} = req.body;
+  const admin = jwt.decode(token) as {admin:boolean};
+  const usernames = [];
+  console.log(admin)
+  if(!admin || !admin.admin){
+    return res.status(401).json("einungis admin hefur aðgang að notandalista");
+  }
+  const q = `SELECT username from Users;`
+  try{
+    const result = await query(q,[]);
+    console.log(result);
+    if(result){
+      for(const re of result.rows){
+        usernames.push(re.username);
+      }
+    }
+    return res.status(200).json(usernames);
+  }catch(error){
+    console.error(error);
+    return res.status(500).json("server side villa");
+  }
 }
 
 export async function createUser(req: Request, res: Response, next: NextFunction) {

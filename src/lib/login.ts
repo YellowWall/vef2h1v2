@@ -101,7 +101,7 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction){
     isAdmin: user.admin,
     access_Token: accessToken,
     tokenType: "Bearer",
-    expiresIn: 2400,
+    expiresIn: 8000,
   });
 }
 export async function signOut(req:Request,res:Response,next:NextFunction){

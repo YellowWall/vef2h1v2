@@ -10,7 +10,7 @@ import {
 import { getRegistrations } from '../lib/db.js';
 
 import {postRegistration, deleteRegistration, getEventRegistrations, patchRegistration } from '../lib/Registrations.js';
-import { createUser, findByUsername } from '../lib/Users.js';
+import { createUser, findByUsername, getUsernames } from '../lib/Users.js';
 import passport, { authMiddleware, isUser, signOut } from '../lib/login.js';
 import { addImage, addImageToEvent, getImage,getEventImages, getEventImage, removeImageFromEvent, getImages, deleteImage } from '../lib/imgapi.js';
 
@@ -102,7 +102,7 @@ router.post('/event/:slug',postRegistration);
 router.post('/login', passport.authenticate("local", {session: false}), authMiddleware);
 router.post('/signup', createUser);
 router.post('/logout',signOut);
-
+router.post('/usernames',getUsernames);
 //router.post('/login',loginCheck)
 //router.get('/logout',endSession)
 
