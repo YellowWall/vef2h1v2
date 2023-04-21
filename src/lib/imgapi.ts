@@ -87,6 +87,14 @@ export async function getImages(req:Request,res:Response,next:NextFunction){
 }
 export async function deleteImage(req:Request,res:Response,next:NextFunction){
     const {image} = req.params;
+    const {token} = req.body;
+    if(!token){
+        return res.status(401).json("ekkert signin token");
+    }
+    const dec = jwt.decode(token) as {admin};
+    if(!dec.admin){
+        return res.status(401).json("notandi hefur ekki heimild til að gera þetta");
+    }
     const del = await deleteFullyImageByName(image);
     if(!del){
         return next();

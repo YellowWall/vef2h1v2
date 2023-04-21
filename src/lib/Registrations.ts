@@ -38,6 +38,23 @@ export async function getEventRegistrations(
 
     return res.json(result);
 }
+export async function getRegistration(req:Request,res:Response,next:NextFunction){
+    const {slug,username} = req.params;
+    const id = await query('select id from events where slug = $1;',[slug])
+
+    if(!id||id.rowCount==0){
+      return res.status(404).json('no such event')
+    }
+    const result = await query(`select * from registrations where event=$1 and username= $2;`,[id.rows[0].id,username]);
+    if(!result){
+        return res.status(404).json('notandi ekki skráður á viðburð');
+    }
+    const ret = DbRegiToRegi(result.rows[0]);
+    if(!ret){
+        return res.status(500).json('vandamĺa með túlkun gagna úr gagnagrunni');
+    }
+    return res.status(200).json(ret);
+}
 export const patchRegistration = [
     stringValidator({ field: 'name', maxLength: 64, optional: true }),
     stringValidator({

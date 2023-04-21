@@ -9,8 +9,8 @@ import {
 
 import { getRegistrations } from '../lib/db.js';
 
-import {postRegistration, deleteRegistration, getEventRegistrations, patchRegistration } from '../lib/Registrations.js';
-import { createUser, findByUsername, getUsernames } from '../lib/Users.js';
+import {getRegistration,postRegistration, deleteRegistration, getEventRegistrations, patchRegistration } from '../lib/Registrations.js';
+import { createUser, findByUsername, getStandardNameOfUser, getUsernames } from '../lib/Users.js';
 import passport, { authMiddleware, isUser, signOut } from '../lib/login.js';
 import { addImage, addImageToEvent, getImage,getEventImages, getEventImage, removeImageFromEvent, getImages, deleteImage } from '../lib/imgapi.js';
 
@@ -94,6 +94,7 @@ router.delete('/image/:image',deleteImage)
 
 router.get('/event/:slug/regis',getEventRegistrations);
 router.patch('/event/:slug/regis/:username',patchRegistration);
+router.get('/event/:slug/regis/:username',getRegistration);
 router.delete('/event/:slug/regis/:username',deleteRegistration);
 router.post('/event/:slug',postRegistration);
 //router.get('/event/:events/:user', registerDetails)
@@ -103,6 +104,7 @@ router.post('/login', passport.authenticate("local", {session: false}), authMidd
 router.post('/signup', createUser);
 router.post('/logout',signOut);
 router.post('/usernames',getUsernames);
+router.get('/users/:user',getStandardNameOfUser)
 //router.post('/login',loginCheck)
 //router.get('/logout',endSession)
 
