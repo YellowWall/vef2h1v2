@@ -210,11 +210,10 @@ export async function getImagesByEventSlug(slug:string){
   return list;
 }
 export async function getSpecificImageByName(name:string){
-  if(!name){
-    return null;
-  }
+  console.log(name);
   const select = `select id,name,url from images where name = $1`;
   const result = await query(select,[name]);
+  console.log(result);
   if(!result){
     return null;
   }
@@ -222,9 +221,6 @@ export async function getSpecificImageByName(name:string){
   return ret;
 }
 export async function putEventImage(image:Img,event:Event):Promise<boolean>{
-  if(!image||!event){
-    return null;
-  }
   console.error(image.id)
   console.error(event.id)
   const insert = await query('insert into eventImages (image,event) values ($1,$2) returning 1;',[image.id,event.id]);

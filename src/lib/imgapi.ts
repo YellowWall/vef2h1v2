@@ -27,17 +27,17 @@ export async function addImage(req:Request,res:Response,next:NextFunction){
 export async function addImageToEvent(req:Request,res:Response,next:NextFunction){
     const {slug} = req.params;
     const {name} = req.body;
-    const image = await getSpecificImageByName(name);
+    const image = await getSpecificImageByName(slugify(name).toLowerCase());
     const event = await getEventBySlug(slug);
     if(!event){
-        res.status(404).json('viðburður með þessu nafni er ekki í kerfinu')
+        return res.status(404).json('viðburður með þessu nafni er ekki í kerfinu')
     }
     if(!image){
-        res.status(404).json('mynd með þessu nafni er ekki í kerfinu');
+        return res.status(404).json('mynd með þessu nafni er ekki í kerfinu');
     }
     const ret = await putEventImage(image,event);
     if(!ret){
-        res.status(500).json('ekki tókst að tengja mynd við viðburð');
+        return res.status(500).json('ekki tókst að tengja mynd við viðburð');
     }
     return res.status(201).json([event,image]);
 }
